@@ -58,44 +58,45 @@
   </div>
  </div>
 </div>
-<div id="start"><div class="card"><div class="sub">ИЗМЕРЕНИЕ 001 // ПРОТОКОЛ ПРОБУЖДЕНИЯ</div><h1>PARADOX</h1><p>Ты проснулся в измерении, которого не должно существовать. Найди Стража Разлома, переживи его атаки и поглоти силу пространства.</p><p>3D-арена, способности, босс, прокачка и кооператив на двоих.</p><div class="roomrow"><button id="hostGame">СОЗДАТЬ КОМНАТУ</button></div><div class="roomrow"><input id="roomCode" placeholder="Код комнаты друга" autocomplete="off"><button id="joinGame">ПОДКЛЮЧИТЬСЯ</button></div><p id="roomStatus" class="roomstatus">Создай комнату и отправь другу код. Для мультиплеера нужен интернет.</p><button id="play">ВОЙТИ В РАЗЛОМ</button><p class="tip">Для 3D и мультиплеера нужен интернет.</p></div></div>
+<div id="start"><div class="card"><div class="sub">ИЗМЕРЕНИЕ 001 // ПРОТОКОЛ ПРОБУЖДЕНИЯ</div><h1>PARADOX</h1><p>Ты проснулся в измерении, которого не должно существовать. Найди Стража Разлома, переживи его атаки и поглоти силу пространства.</p><p>Яркая арена сверху, пиксельные герои, способности, босс и кооператив на двоих.</p><div class="roomrow"><button id="hostGame">СОЗДАТЬ КОМНАТУ</button></div><div class="roomrow"><input id="roomCode" placeholder="Код комнаты друга" autocomplete="off"><button id="joinGame">ПОДКЛЮЧИТЬСЯ</button></div><p id="roomStatus" class="roomstatus">Создай комнату и отправь другу код. Для мультиплеера нужен интернет.</p><button id="play">ВОЙТИ В РАЗЛОМ</button><p class="tip">Для 3D и мультиплеера нужен интернет.</p></div></div>
 <script type="module">
 import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js';
 import { Peer } from 'https://esm.sh/peerjs@1.5.4';
 
 const mount=document.querySelector('#game');
-const scene=new THREE.Scene(); scene.background=new THREE.Color(0x080512); scene.fog=new THREE.FogExp2(0x080512,0.018);
-const camera=new THREE.PerspectiveCamera(62,innerWidth/innerHeight,.1,300);
-const renderer=new THREE.WebGLRenderer({antialias:true,alpha:false}); renderer.setPixelRatio(Math.min(devicePixelRatio,1.8));renderer.setSize(innerWidth,innerHeight);renderer.shadowMap.enabled=true;renderer.shadowMap.type=THREE.PCFSoftShadowMap;renderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.toneMappingExposure=1.25;mount.appendChild(renderer.domElement);
-scene.add(new THREE.HemisphereLight(0x9b83ff,0x10091f,2.0));
-const key=new THREE.DirectionalLight(0xc6a7ff,3);key.position.set(8,16,9);key.castShadow=true;scene.add(key);
-const cyanLight=new THREE.PointLight(0x22ddff,20,28);cyanLight.position.set(-5,4,-4);scene.add(cyanLight);
-const pinkLight=new THREE.PointLight(0xe72bff,22,24);pinkLight.position.set(6,3,4);scene.add(pinkLight);
+const scene=new THREE.Scene(); scene.background=new THREE.Color(0x8be85b);
+const camera=new THREE.OrthographicCamera(-18,18,10,-10,.1,180); camera.up.set(0,0,-1);
+const renderer=new THREE.WebGLRenderer({antialias:false,alpha:false}); renderer.setPixelRatio(Math.min(devicePixelRatio,1.5));renderer.setSize(innerWidth,innerHeight);renderer.shadowMap.enabled=false;renderer.domElement.style.imageRendering='pixelated';mount.appendChild(renderer.domElement);
+scene.add(new THREE.HemisphereLight(0xffffff,0x78a84a,2.0));
+const key=new THREE.DirectionalLight(0xffffff,1.4);key.position.set(8,16,9);scene.add(key);
 const mat=(color,emissive=0x000000,metalness=.2,roughness=.45)=>new THREE.MeshStandardMaterial({color,emissive,emissiveIntensity:1.2,metalness,roughness});
-const floorMat=mat(0x17112b,0x10072a,.5,.65);
-const floor=new THREE.Mesh(new THREE.CylinderGeometry(22,22,1,64),floorMat);floor.position.y=-.55;floor.receiveShadow=true;scene.add(floor);
-const grid=new THREE.GridHelper(44,44,0x6330a0,0x241735);grid.position.y=-.035;scene.add(grid);
-// Ruined pixel-world tiles: broken square platforms, stone blocks and glowing crystal clusters.
-const tileMat=mat(0x28203d,0x100b20,.05,.95), edgeMat=mat(0x46305d,0x190d2c,.05,.9);
-for(let i=0;i<44;i++){const x=(Math.random()-.5)*37,z=(Math.random()-.5)*37;if(Math.hypot(x,z)<5.5||Math.hypot(x,z+9)<4.5)continue;const w=.7+Math.random()*2.2,d=.7+Math.random()*2.2;const tile=new THREE.Mesh(new THREE.BoxGeometry(w,.12,d),Math.random()<.5?tileMat:edgeMat);tile.position.set(x,.02,z);tile.rotation.y=Math.random()*Math.PI;tile.receiveShadow=true;scene.add(tile);if(Math.random()<.23){const stone=new THREE.Mesh(new THREE.BoxGeometry(.45+Math.random()*.6,.35+Math.random()*.7,.45+Math.random()*.6),edgeMat);stone.position.set(x,.22,z);stone.rotation.y=Math.random()*1.5;stone.castShadow=true;scene.add(stone)}}
-// Small square obelisks around the playable area make the arena feel like an explorable map.
-for(let i=0;i<18;i++){const a=i*Math.PI*2/18,r=10+Math.random()*8,x=Math.cos(a)*r,z=Math.sin(a)*r;const base=new THREE.Mesh(new THREE.BoxGeometry(.9,.45,.9),edgeMat);base.position.set(x,.12,z);base.rotation.y=a;scene.add(base);const ob=new THREE.Mesh(new THREE.BoxGeometry(.38,1.4+Math.random()*1.2,.38),mat(i%2?0x21445a:0x42235d,i%2?0x00bde8:0x8a22e8,.05,.8));ob.position.set(x,.8,z);ob.rotation.y=a+.2;ob.castShadow=true;scene.add(ob);const rune=new THREE.Mesh(new THREE.BoxGeometry(.55,.08,.55),new THREE.MeshBasicMaterial({color:i%2?0x22ddff:0xff42d0}));rune.position.set(x,1.35,z);rune.rotation.y=a;scene.add(rune)}
-// glowing rings in the arena
-for(let i=0;i<5;i++){const ring=new THREE.Mesh(new THREE.TorusGeometry(4+i*3,.025,6,120),new THREE.MeshBasicMaterial({color:i%2?0x4dcef5:0x9a43ff,transparent:true,opacity:.42}));ring.rotation.x=Math.PI/2;ring.position.y=.02+i*.006;scene.add(ring)}
-// distant floating crystals
-for(let i=0;i<38;i++){const a=Math.random()*Math.PI*2,r=14+Math.random()*35,h=1+Math.random()*9;const m=new THREE.Mesh(new THREE.OctahedronGeometry(.3+Math.random()*.8),mat(i%2?0x482a91:0x146b8a,i%2?0x7b26ff:0x00c9ff));m.position.set(Math.cos(a)*r,h,Math.sin(a)*r);m.rotation.set(Math.random()*3,Math.random()*3,Math.random()*3);scene.add(m)}
-// stars
-const starGeo=new THREE.BufferGeometry(),positions=[];for(let i=0;i<800;i++)positions.push((Math.random()-.5)*150,Math.random()*70+4,(Math.random()-.5)*150);starGeo.setAttribute('position',new THREE.Float32BufferAttribute(positions,3));scene.add(new THREE.Points(starGeo,new THREE.PointsMaterial({color:0xb9a1ff,size:.13,transparent:true,opacity:.8})));
-
+// Bright top-down survival arena: grass, winding dirt paths, flower patches and chunky trees.
+const floorMat=new THREE.MeshBasicMaterial({color:0x78d84b});
+const floor=new THREE.Mesh(new THREE.PlaneGeometry(52,52),floorMat);floor.rotation.x=-Math.PI/2;floor.position.y=-.08;scene.add(floor);
+// Large winding sandy paths made from flat rounded-looking segments.
+const pathMat=new THREE.MeshBasicMaterial({color:0xe8c878});
+function pathSeg(x,z,w,d,rot=0){const m=new THREE.Mesh(new THREE.PlaneGeometry(w,d),pathMat);m.rotation.x=-Math.PI/2;m.rotation.z=rot;m.position.set(x,-.045,z);scene.add(m)}
+pathSeg(0,0,8,5,.25);pathSeg(-5,-4,7,4,-.45);pathSeg(4,5,8,4,-.55);pathSeg(8,-5,7,3,.55);pathSeg(-9,6,7,3,.25);
+// Pixel-art sprite helper: low-resolution canvas enlarged with nearest-neighbour filtering.
+function pixelTexture(draw,w=32,h=32){const c=document.createElement('canvas');c.width=w;c.height=h;const ctx=c.getContext('2d');ctx.imageSmoothingEnabled=false;draw(ctx,w,h);const t=new THREE.CanvasTexture(c);t.magFilter=THREE.NearestFilter;t.minFilter=THREE.NearestFilter;t.colorSpace=THREE.SRGBColorSpace;return t}
+function makeHeroTexture(main,accent,skin='#ffe0a6'){return pixelTexture((c)=>{c.clearRect(0,0,32,32);c.fillStyle='rgba(30,50,25,.25)';c.fillRect(7,25,18,4);c.fillStyle='#292c4a';c.fillRect(9,21,5,7);c.fillRect(18,21,5,7);c.fillStyle=main;c.fillRect(7,11,18,12);c.fillRect(5,13,4,8);c.fillRect(23,13,4,8);c.fillStyle=accent;c.fillRect(8,12,16,3);c.fillStyle=skin;c.fillRect(10,3,12,9);c.fillRect(8,5,3,5);c.fillRect(21,5,3,5);c.fillStyle='#352544';c.fillRect(10,2,12,3);c.fillRect(8,4,4,3);c.fillRect(20,4,4,3);c.fillStyle='#fff';c.fillRect(12,6,3,3);c.fillRect(18,6,3,3);c.fillStyle='#27344a';c.fillRect(13,7,2,2);c.fillRect(18,7,2,2);c.fillStyle=accent;c.fillRect(12,16,8,3);c.fillRect(15,14,3,7);},32,32)}
+function makeBossTexture(){return pixelTexture(c=>{c.clearRect(0,0,32,32);c.fillStyle='rgba(55,20,50,.25)';c.fillRect(4,27,24,3);c.fillStyle='#9b39ce';c.fillRect(5,12,22,14);c.fillRect(3,15,4,8);c.fillRect(25,15,4,8);c.fillStyle='#f05cbd';c.fillRect(8,5,16,10);c.fillRect(5,8,22,7);c.fillStyle='#ffcf66';c.fillRect(8,8,4,4);c.fillRect(20,8,4,4);c.fillStyle='#5d245f';c.fillRect(9,9,3,3);c.fillRect(20,9,3,3);c.fillStyle='#fff5a6';c.fillRect(10,9,1,1);c.fillRect(21,9,1,1);c.fillStyle='#ff76d0';c.fillRect(13,15,6,3);c.fillStyle='#7525a7';c.fillRect(8,25,5,5);c.fillRect(20,25,5,5);c.fillStyle='#ffd86b';c.fillRect(14,3,4,3);},32,32)}
+function flatSprite(texture,w,h){const m=new THREE.Mesh(new THREE.PlaneGeometry(w,h),new THREE.MeshBasicMaterial({map:texture,transparent:true,alphaTest:.04,side:THREE.DoubleSide,depthWrite:false}));m.rotation.x=-Math.PI/2;m.position.y=.18;return m}
+// Flower patches and tiny pixel rocks make the map colourful without blocking the camera.
+for(let i=0;i<170;i++){const x=(Math.random()-.5)*47,z=(Math.random()-.5)*47;if(Math.hypot(x,z)<5)continue;const colors=[0xff5ca8,0xffe35e,0xffffff,0x65eaff,0xc77bff];const flower=new THREE.Mesh(new THREE.BoxGeometry(.16,.04,.16),new THREE.MeshBasicMaterial({color:colors[i%colors.length]}));flower.position.set(x,.01,z);scene.add(flower);if(i%4===0){const leaf=new THREE.Mesh(new THREE.BoxGeometry(.32,.05,.16),new THREE.MeshBasicMaterial({color:0x309c43}));leaf.position.set(x+.18,.005,z+.08);scene.add(leaf)}}
+for(let i=0;i<30;i++){const x=(Math.random()-.5)*42,z=(Math.random()-.5)*42;if(Math.hypot(x,z)<7||Math.hypot(x,z+9)<5)continue;const tree=new THREE.Group();tree.position.set(x,0,z);const trunk=new THREE.Mesh(new THREE.BoxGeometry(.45,.5,.45),new THREE.MeshBasicMaterial({color:0x9b6034}));trunk.position.y=.22;tree.add(trunk);const crown=new THREE.Mesh(new THREE.BoxGeometry(1.55,.22,1.45),new THREE.MeshBasicMaterial({color:i%3===0?0x26a84a:i%3===1?0x36bd4e:0x168f43}));crown.position.y=.52;tree.add(crown);const top=new THREE.Mesh(new THREE.BoxGeometry(.9,.2,.9),new THREE.MeshBasicMaterial({color:0x55d85a}));top.position.set(-.1,.72,-.08);tree.add(top);scene.add(tree)}
+for(let i=0;i<22;i++){const x=(Math.random()-.5)*42,z=(Math.random()-.5)*42;const rock=new THREE.Mesh(new THREE.BoxGeometry(.45+Math.random()*.45,.12,.35+Math.random()*.4),new THREE.MeshBasicMaterial({color:i%2?0x9ba6a9:0x7f8b94}));rock.position.set(x,.03,z);rock.rotation.y=Math.random()*1.4;scene.add(rock)}
 // Player made of layered geometric meshes
-const player=new THREE.Group();scene.add(player);player.position.set(0,0,7);
+const player=new THREE.Group();scene.add(player);player.position.set(0,0,7);camera.position.set(0,42,7);camera.lookAt(0,0,7);
 const body=new THREE.Mesh(new THREE.CapsuleGeometry(.42,.85,5,10),mat(0x241c44,0x6d32ff));body.position.y=1.0;body.castShadow=true;player.add(body);
 const chest=new THREE.Mesh(new THREE.OctahedronGeometry(.43),mat(0x75f7ff,0x1cecff));chest.position.set(0,1.2,-.08);chest.scale.set(.7,1.15,.55);player.add(chest);
 const head=new THREE.Mesh(new THREE.IcosahedronGeometry(.3,1),mat(0x1b1635,0x9d4dff));head.position.y=1.85;player.add(head);
 const eyeMat=new THREE.MeshBasicMaterial({color:0x7bffff});for(const x of [-.11,.11]){const e=new THREE.Mesh(new THREE.SphereGeometry(.045,8,8),eyeMat);e.position.set(x,1.88,-.255);player.add(e)}
 const aura=new THREE.Mesh(new THREE.TorusGeometry(.75,.035,8,48),new THREE.MeshBasicMaterial({color:0x9d4dff,transparent:true,opacity:.8}));aura.rotation.x=Math.PI/2;aura.position.y=.06;player.add(aura);
+// Replace the 3D model with a crisp top-down pixel hero sprite.
+body.visible=false;chest.visible=false;head.visible=false;player.children.filter(o=>o!==body&&o!==chest&&o!==head&&o!==aura).forEach(o=>o.visible=false);aura.visible=false;const playerSprite=flatSprite(makeHeroTexture('#3478ff','#5cf4ff'),2.0,2.0);player.add(playerSprite);
 // orbiting fragments
-const fragments=[];for(let i=0;i<3;i++){const f=new THREE.Mesh(new THREE.OctahedronGeometry(.12),mat(0x55f4ff,0x22ccff));scene.add(f);fragments.push(f)}
+const fragments=[];
 // Boss
 const boss=new THREE.Group();scene.add(boss);boss.position.set(0,0,-9);
 const bossCore=new THREE.Mesh(new THREE.BoxGeometry(1.75,1.65,1.35),mat(0x3c102f,0xff248a,0,.95));bossCore.position.y=1.55;bossCore.castShadow=true;boss.add(bossCore);
@@ -104,8 +105,10 @@ const bossHead=new THREE.Mesh(new THREE.BoxGeometry(1.05,.9,.95),mat(0x1c1230,0x
 const bossEyeMat=new THREE.MeshBasicMaterial({color:0xffffff});for(const ex of [-.25,.25]){const eye=new THREE.Mesh(new THREE.BoxGeometry(.16,.16,.07),bossEyeMat);eye.position.set(ex,2.78,-.51);boss.add(eye)}
 const bossLimbs=[];for(let i=0;i<4;i++){const limb=new THREE.Mesh(new THREE.BoxGeometry(.42,1.35,.48),mat(0x311447,0x9e217c,0,.95));limb.position.set(Math.cos(i*Math.PI/2)*1.0,1.05,Math.sin(i*Math.PI/2)*.7);limb.rotation.z=(i%2?-.18:.18);limb.castShadow=true;boss.add(limb);bossLimbs.push(limb)}
 const bossAura=new THREE.Mesh(new THREE.TorusGeometry(1.8,.06,8,60),new THREE.MeshBasicMaterial({color:0xff36bd,transparent:true,opacity:.8}));bossAura.rotation.x=Math.PI/2;bossAura.position.y=.08;boss.add(bossAura);
+// Pixel boss sprite replaces the chunky 3D parts while keeping the existing AI and HP logic.
+bossCore.visible=false;bossHead.visible=false;bossLimbs.forEach(o=>o.visible=false);bossAura.visible=false;const bossSprite=flatSprite(makeBossTexture(),3.0,3.0);boss.add(bossSprite);
 // A second player is rendered locally and synchronized through a PeerJS data connection.
-function makeAvatar(color=0x55f4ff){const g=new THREE.Group();const b=new THREE.Mesh(new THREE.CapsuleGeometry(.42,.85,5,10),mat(0x172d45,color));b.position.y=1;g.add(b);const c=new THREE.Mesh(new THREE.OctahedronGeometry(.43),mat(color,color));c.position.set(0,1.2,-.08);c.scale.set(.7,1.15,.55);g.add(c);const h=new THREE.Mesh(new THREE.IcosahedronGeometry(.3,1),mat(0x15243b,color));h.position.y=1.85;g.add(h);return g}
+function makeAvatar(color=0x55f4ff){const g=new THREE.Group();const sprite=flatSprite(makeHeroTexture('#13a9a8','#fff16a'),2.0,2.0);g.add(sprite);return g}
 const remotePlayer=makeAvatar(0x55f4ff);remotePlayer.visible=false;scene.add(remotePlayer);
 let peer=null,conn=null,isHost=false,lastNetSend=0,remoteTarget=null;
 const roomStatus=document.querySelector('#roomStatus');
@@ -151,18 +154,19 @@ document.querySelector('#play').addEventListener('click',async()=>{
 let last=performance.now(),elapsed=0;
 function loop(now){requestAnimationFrame(loop);let dt=Math.min((now-last)/1000,.04);last=now;elapsed+=dt;
  if(started){if(attackCd>0)attackCd-=dt;if(dashCd>0)dashCd-=dt;if(timeCd>0)timeCd-=dt;if(burstCd>0)burstCd-=dt;if(stasis>0)stasis-=dt;if(invuln>0)invuln-=dt;if(toastTimer>0){toastTimer-=dt;if(toastTimer<=0)document.querySelector('#toast').style.opacity=0}
- let mx=moveX+(keys.d||keys.arrowright?1:0)-(keys.a||keys.arrowleft?1:0),mz=moveY+(keys.s||keys.arrowdown?1:0)-(keys.w||keys.arrowup?1:0);let len=Math.hypot(mx,mz);if(len>1){mx/=len;mz/=len}const speed=5.4;player.position.x+=mx*speed*dt;player.position.z+=mz*speed*dt;player.position.x=Math.max(-20,Math.min(20,player.position.x));player.position.z=Math.max(-20,Math.min(20,player.position.z));if(conn&&conn.open&&now-lastNetSend>70){lastNetSend=now;try{conn.send({type:'state',x:player.position.x,y:player.position.y,z:player.position.z,ry:player.rotation.y,hp:hp,level:level,bhp:bossHp})}catch(e){}}if(remoteTarget&&remotePlayer.visible){remotePlayer.position.x+=(remoteTarget.x-remotePlayer.position.x)*Math.min(1,dt*10);remotePlayer.position.z+=(remoteTarget.z-remotePlayer.position.z)*Math.min(1,dt*10);remotePlayer.rotation.y=remoteTarget.ry||0;}if(Math.abs(mx)+Math.abs(mz)>.08){player.rotation.y=Math.atan2(mx,mz);body.position.y=1+Math.sin(elapsed*13)*.055}else body.position.y=1+Math.sin(elapsed*2)*.025;
+ let mx=moveX+(keys.d||keys.arrowright?1:0)-(keys.a||keys.arrowleft?1:0),mz=moveY+(keys.s||keys.arrowdown?1:0)-(keys.w||keys.arrowup?1:0);let len=Math.hypot(mx,mz);if(len>1){mx/=len;mz/=len}const speed=5.4;player.position.x+=mx*speed*dt;player.position.z+=mz*speed*dt;player.position.x=Math.max(-20,Math.min(20,player.position.x));player.position.z=Math.max(-20,Math.min(20,player.position.z));if(conn&&conn.open&&now-lastNetSend>70){lastNetSend=now;try{conn.send({type:'state',x:player.position.x,y:player.position.y,z:player.position.z,ry:player.rotation.y,hp:hp,level:level,bhp:bossHp})}catch(e){}}if(remoteTarget&&remotePlayer.visible){remotePlayer.position.x+=(remoteTarget.x-remotePlayer.position.x)*Math.min(1,dt*10);remotePlayer.position.z+=(remoteTarget.z-remotePlayer.position.z)*Math.min(1,dt*10);remotePlayer.rotation.y=remoteTarget.ry||0;}if(Math.abs(mx)+Math.abs(mz)>.08){player.rotation.y=0;body.position.y=1+Math.sin(elapsed*13)*.055}else body.position.y=1+Math.sin(elapsed*2)*.025;
  aura.rotation.z+=dt*.9;chest.rotation.y=Math.sin(elapsed*2)*.12;fragments.forEach((f,i)=>{let a=elapsed*1.5+i*Math.PI*2/3;f.position.set(player.position.x+Math.cos(a)*.8,1.25+Math.sin(elapsed*3+i)*.15,player.position.z+Math.sin(a)*.8)});
  if(!won){boss.position.y=Math.sin(elapsed*1.8)*.22;bossCore.rotation.y+=dt*.22;bossCore.rotation.x=Math.sin(elapsed*2)*.035;bossHead.rotation.y-=dt*.28;bossLimbs.forEach((limb,i)=>{limb.rotation.x=Math.sin(elapsed*7+i*Math.PI)*.28;limb.rotation.z=(i%2?-.18:.18)+Math.sin(elapsed*7+i)*.12});bossAura.rotation.z+=dt*.7;
   // The Rift Guardian now patrols and chases the nearest visible player instead of standing still.
-  if(stasis<=0){const dx=player.position.x-boss.position.x,dz=player.position.z-boss.position.z,dist=Math.hypot(dx,dz);if(dist>3.1&&dist<24){boss.position.x+=dx/dist*2.15*dt;boss.position.z+=dz/dist*2.15*dt;}else if(dist>=24){boss.position.x+=Math.sin(elapsed*.7)*.35*dt;boss.position.z+=Math.cos(elapsed*.65)*.35*dt;}boss.rotation.y=Math.atan2(dx,dz);}
+  if(stasis<=0){const dx=player.position.x-boss.position.x,dz=player.position.z-boss.position.z,dist=Math.hypot(dx,dz);if(dist>3.1&&dist<24){boss.position.x+=dx/dist*2.15*dt;boss.position.z+=dz/dist*2.15*dt;}else if(dist>=24){boss.position.x+=Math.sin(elapsed*.7)*.35*dt;boss.position.z+=Math.cos(elapsed*.65)*.35*dt;}boss.rotation.y=0;}
   if(stasis<=0&&player.position.distanceTo(boss.position)<5.7){boss.userData.atk=(boss.userData.atk||0)+dt;if(boss.userData.atk>1.4){boss.userData.atk=0;hurt(9+level);effect(player.position.clone().add(new THREE.Vector3(0,1,0)),0xff248a,1.6)}}}
- camera.position.lerp(new THREE.Vector3(player.position.x,player.position.y+8,player.position.z+11),1-Math.pow(.001,dt));camera.lookAt(player.position.x,player.position.y+.7,player.position.z-1);
+ camera.position.set(player.position.x,42,player.position.z);camera.lookAt(player.position.x,0,player.position.z);
  }
  effects.forEach((e,i)=>{e.t+=dt;e.mesh.scale.setScalar(1+e.t*e.scale*2);e.mesh.material.opacity=Math.max(0,.8-e.t);if(e.t>.45){scene.remove(e.mesh);effects.splice(i,1)}});
  if(started)updateHud();renderer.render(scene,camera)}
 requestAnimationFrame(loop);
-addEventListener('resize',()=>{camera.aspect=innerWidth/innerHeight;camera.updateProjectionMatrix();renderer.setSize(innerWidth,innerHeight)});
+addEventListener('resize',()=>{const aspect=innerWidth/innerHeight;const viewH=aspect>1?22:34;camera.left=-viewH*aspect/2;camera.right=viewH*aspect/2;camera.top=viewH/2;camera.bottom=-viewH/2;camera.updateProjectionMatrix();renderer.setSize(innerWidth,innerHeight)});
+{const aspect=innerWidth/innerHeight;const viewH=aspect>1?22:34;camera.left=-viewH*aspect/2;camera.right=viewH*aspect/2;camera.top=viewH/2;camera.bottom=-viewH/2;camera.updateProjectionMatrix();}
 </script>
 </body>
 </html>
