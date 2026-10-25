@@ -3,170 +3,136 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
-<meta name="theme-color" content="#080512">
-<link rel="manifest" href="manifest.json">
-<title>PARADOX — 3D RPG</title>
+<meta name="theme-color" content="#24140d">
+<title>Sugar Clicker</title>
 <style>
-:root{--violet:#a855f7;--cyan:#55f4ff;--pink:#ff53d8;--glass:rgba(12,8,29,.82)}
-*{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#07040f;color:#fff;font-family:system-ui,-apple-system,Segoe UI,sans-serif;touch-action:none}
-#game{position:fixed;inset:0}canvas{display:block}
-.hud{position:fixed;inset:0;pointer-events:none}
-.top{display:flex;justify-content:space-between;align-items:flex-start;padding:14px;gap:10px}
-.brand{font-weight:1000;font-size:clamp(19px,4vw,30px);letter-spacing:4px;text-shadow:0 0 18px #a855f7}
-.sub{font-size:10px;letter-spacing:2px;color:#cbb6ff}
-.panel{background:var(--glass);border:1px solid #8d55d866;border-radius:13px;padding:10px 12px;backdrop-filter:blur(8px);box-shadow:0 0 22px #8b36d422}
-.stats{width:min(42vw,250px);font-size:12px}.bar{height:8px;background:#29203e;border-radius:9px;overflow:hidden;margin:5px 0 8px}.fill{height:100%;width:100%;transition:width .2s}.hp{background:linear-gradient(90deg,#ff3c79,#ff8dbe)}.xp{background:linear-gradient(90deg,#8d4dff,#55f4ff)}
-.bossbox{position:absolute;top:96px;left:50%;transform:translateX(-50%);width:min(70vw,420px);text-align:center;display:none}.bossname{font-size:12px;letter-spacing:3px;color:#ffb6f4;font-weight:900}.bossbar{height:10px;background:#35112e;border:1px solid #ff53d8;border-radius:10px;overflow:hidden;margin-top:7px}.bossfill{height:100%;width:100%;background:linear-gradient(90deg,#ff2c86,#a855f7)}
-.objective{position:absolute;left:14px;top:105px;max-width:190px;font-size:12px;line-height:1.5;color:#d7c9ff}
-.controls{position:absolute;inset:auto 0 18px;display:flex;justify-content:space-between;align-items:flex-end;padding:0 18px;pointer-events:none}
-#stick{width:124px;height:124px;border:1px solid #bd83ff88;background:#1b123b88;border-radius:50%;position:relative;pointer-events:auto;box-shadow:inset 0 0 25px #a855f722;touch-action:none}
-#nub{position:absolute;width:48px;height:48px;left:37px;top:37px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#f5cfff,#8b43e9 60%,#35145e);border:1px solid #e6c5ff;box-shadow:0 0 20px #a855f7}
-.actions{display:grid;grid-template-columns:repeat(2,68px);gap:9px;pointer-events:auto}
-.act{width:68px;height:68px;border-radius:50%;padding:0;font-size:11px;display:flex;flex-direction:column;justify-content:center;align-items:center;gap:2px;background:radial-gradient(circle at 30% 20%,#5d2e95,#170d31);border:1px solid #c17aff;box-shadow:0 0 20px #9b4dff44;touch-action:none}.act b{font-size:21px}
-#toast{position:absolute;left:50%;top:48%;transform:translate(-50%,-50%);font-weight:900;letter-spacing:2px;text-align:center;text-shadow:0 0 18px #bd65ff;opacity:0;transition:opacity .25s;font-size:clamp(18px,5vw,30px);width:90%}
-#start{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;background:radial-gradient(ellipse at center,#241047ee,#07040ff7 68%);z-index:5;padding:20px}
-.card{max-width:520px;width:100%;text-align:center;padding:30px 22px;background:#100b20ed;border:1px solid #9d59e8;border-radius:22px;box-shadow:0 0 60px #7c3aed33}
-.card h1{font-size:clamp(38px,10vw,64px);margin:0;letter-spacing:5px;background:linear-gradient(90deg,#fff,#c58cff,#55f4ff);color:transparent;background-clip:text}
-.card p{color:#c9bce7;line-height:1.6}.card button{font-size:16px;padding:12px 18px;margin-top:8px}.roomrow{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-top:10px}.roomrow input{min-width:150px;width:55%;padding:12px;border-radius:10px;border:1px solid #8d55d8;background:#080512;color:#fff;font-size:14px}.roomrow button{margin-top:0;font-size:13px;padding:12px}.roomstatus{font-size:12px!important;color:#55f4ff!important;overflow-wrap:anywhere}
-.tip{font-size:11px!important;color:#8e80ae!important}
-#mini{position:absolute;right:14px;top:95px;font-size:11px;color:#d8caff;text-align:right}
-@media(min-width:800px){.controls{padding:0 35px 24px}#stick{width:140px;height:140px}#nub{left:45px;top:45px}.actions{grid-template-columns:repeat(4,70px)}.act{width:70px;height:70px}}
+:root{--bg:#24140d;--panel:#392219;--panel2:#4a2b1e;--gold:#ffd36a;--cream:#fff1c9;--muted:#c7a88b;--line:#6d4430}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at 50% 10%,#61351f 0,#24140d 58%);color:var(--cream);font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;min-height:100vh}
+header{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:14px 18px;border-bottom:1px solid #754a2d;background:#1b100bda;position:sticky;top:0;z-index:5}
+.logo{font-weight:1000;letter-spacing:1px;font-size:clamp(18px,4vw,25px);color:var(--gold);text-shadow:0 2px #6c3217}.logo span{color:#fff1c9}
+button{font:inherit;cursor:pointer;color:inherit}
+.header-actions{display:flex;gap:8px}.smallbtn{border:1px solid var(--line);background:#402719;border-radius:10px;padding:8px 11px;font-weight:700}
+main{max-width:1200px;margin:auto;padding:18px;display:grid;grid-template-columns:minmax(0,1.1fr) minmax(300px,.9fr);gap:18px}
+.panel{background:linear-gradient(145deg,#45291d,#2d1a12);border:1px solid #70452e;border-radius:18px;box-shadow:0 12px 30px #10080466;overflow:hidden}
+.center{min-height:590px;display:flex;flex-direction:column;align-items:center;padding:24px 16px;position:relative;text-align:center}
+h1{font-size:clamp(28px,5vw,44px);margin:0 0 5px;color:var(--gold);line-height:1.15}
+.count{font-size:clamp(24px,5vw,36px);font-weight:900;font-variant-numeric:tabular-nums;margin-top:8px}
+.sub{color:var(--muted);font-size:14px}.rate{margin-top:3px;color:#f8d9a0;font-weight:700}
+.cookie-wrap{position:relative;width:min(66vw,310px);height:min(66vw,310px);max-width:310px;max-height:310px;margin:22px auto 16px;display:grid;place-items:center}
+.cookie{width:100%;height:100%;border:0;border-radius:50%;position:relative;isolation:isolate;background:
+radial-gradient(circle at 28% 23%,#f7d08a 0 3%,transparent 4%),
+radial-gradient(circle at 68% 20%,#6d3217 0 3.5%,transparent 4.5%),
+radial-gradient(circle at 72% 63%,#6d3217 0 4%,transparent 5%),
+radial-gradient(circle at 38% 70%,#743719 0 3.5%,transparent 4.5%),
+radial-gradient(circle at 52% 42%,#512512 0 4%,transparent 5%),
+radial-gradient(circle at 22% 57%,#5d2c16 0 3%,transparent 4%),
+radial-gradient(circle at 54% 83%,#f6ce85 0 3%,transparent 4%),
+radial-gradient(circle at 42% 30%,#7a3c1a 0 4%,transparent 5%),
+radial-gradient(circle at 50% 50%,#c9823e 0,#b66c31 58%,#8a451e 68%,#5a2b15 72%,#e2a35b 74%,#7b3a18 80%,#3a1b0d 82%);
+box-shadow:inset -12px -15px 0 #5c2b15aa,inset 8px 8px 0 #ffdf9a88,0 16px 0 #512510,0 22px 24px #130903a8;transition:transform .07s;touch-action:manipulation}
+.cookie:before{content:"";position:absolute;inset:8%;border:5px dotted #e8b16a99;border-radius:50%;pointer-events:none}
+.cookie:after{content:"";position:absolute;inset:0;border-radius:50%;background:radial-gradient(ellipse at 35% 20%,#fff4cf44,transparent 45%);pointer-events:none}
+.cookie:active{transform:scale(.96) rotate(-2deg)}
+.clickhint{font-size:13px;color:var(--muted);margin-top:4px}
+.stats{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;margin-top:12px}.pill{padding:7px 11px;border-radius:999px;background:#24140dbb;border:1px solid #70452e;color:#f7d8a0;font-size:13px}
+.side{display:flex;flex-direction:column;gap:14px}.tabs{display:flex;border-bottom:1px solid var(--line);background:#2b190f}.tab{flex:1;padding:13px 8px;border:0;background:transparent;color:var(--muted);font-weight:800}.tab.active{color:var(--gold);box-shadow:inset 0 -3px var(--gold)}
+.section-title{display:flex;justify-content:space-between;align-items:center;padding:16px 16px 8px;font-size:19px;font-weight:900}.section-title small{font-size:12px;color:var(--muted);font-weight:600}
+.items{padding:8px 12px 14px;display:flex;flex-direction:column;gap:9px;max-height:590px;overflow:auto}
+.item{display:grid;grid-template-columns:52px 1fr auto;gap:10px;align-items:center;text-align:left;padding:10px;border-radius:13px;border:1px solid #6a422b;background:linear-gradient(110deg,#543020,#392117);min-height:77px;transition:filter .15s,border-color .15s}
+.item:not(:disabled):hover{border-color:#e0ad5a;filter:brightness(1.12)}.item:disabled{opacity:.5;cursor:not-allowed;filter:saturate(.6)}
+.icon{height:48px;width:48px;display:grid;place-items:center;font-size:31px;border-radius:12px;background:#27150e;border:1px solid #815333}
+.item-name{font-weight:900;font-size:15px}.item-desc{font-size:12px;color:#c8a88c;margin-top:2px}.cost{font-weight:900;color:var(--gold);font-size:13px;text-align:right;white-space:nowrap}.owned{font-size:12px;color:var(--muted);text-align:right;margin-top:5px}
+.notice{position:fixed;left:50%;bottom:22px;transform:translate(-50%,20px);opacity:0;background:#ffe4a1;color:#382012;padding:11px 16px;border-radius:12px;font-weight:900;z-index:10;transition:.25s;pointer-events:none;box-shadow:0 6px 20px #0008}.notice.show{opacity:1;transform:translate(-50%,0)}
+.float{position:absolute;z-index:2;color:#fff0b3;font-weight:1000;font-size:25px;text-shadow:0 2px #55230e;pointer-events:none;animation:floatup .85s ease-out forwards}
+@keyframes floatup{to{transform:translateY(-85px) scale(1.2);opacity:0}}
+.gold-cookie{position:absolute;right:12%;top:20%;font-size:42px;border:0;background:transparent;filter:drop-shadow(0 0 12px #ffcf45);animation:glow 1s infinite alternate;z-index:3}
+@keyframes glow{to{transform:scale(1.13);filter:drop-shadow(0 0 20px #ffdb5e)}}
+.empty{text-align:center;padding:40px 15px;color:var(--muted)}
+footer{text-align:center;padding:8px 18px 24px;color:#a9876b;font-size:12px}
+@media(max-width:760px){main{grid-template-columns:1fr;padding:10px;gap:12px}.center{min-height:490px;padding:20px 12px}.cookie-wrap{width:min(70vw,275px);height:min(70vw,275px);margin:18px auto}.items{max-height:none}.side{gap:12px}header{padding:11px 12px}.logo{font-size:18px}.smallbtn{padding:7px 8px;font-size:12px}}
 </style>
 </head>
 <body>
-<div id="game"></div>
-<div class="hud">
- <div class="top">
-  <div><div class="brand">PARADOX</div><div class="sub">REALITY BREAKER // 3D RPG</div></div>
-  <div class="panel stats">
-   <div>УРОВЕНЬ <b id="level">1</b>　✦ <b id="shards">0</b></div>
-   <div style="color:#ff8ab7">ЖИЗНЬ <span id="hptext">100 / 100</span></div><div class="bar"><div class="fill hp" id="hpfill"></div></div>
-   <div style="color:#72f6ff">ОПЫТ <span id="xptext">0 / 100</span></div><div class="bar"><div class="fill xp" id="xpfill" style="width:0%"></div></div>
-  </div>
- </div>
- <div class="objective panel">ЗАДАНИЕ<br><b id="quest">Найди и победи Стража Разлома</b><br><span id="hint">Исследуй арену и приближайся к боссу.</span></div>
- <div id="mini">WASD / джойстик — движение<br>Камера следует за героем</div>
- <div class="bossbox" id="bossbox"><div class="bossname">СТРАЖ РАЗЛОМА</div><div class="bossbar"><div class="bossfill" id="bossfill"></div></div></div>
- <div id="toast"></div>
- <div class="controls">
-  <div id="stick"><div id="nub"></div></div>
-  <div class="actions">
-   <button class="act" id="attack"><b>⚔</b>АТАКА</button>
-   <button class="act" id="dash"><b>➤</b>РЫВОК</button>
-   <button class="act" id="time"><b>⌛</b>СТАЗИС</button>
-   <button class="act" id="burst"><b>✦</b>РАЗЛОМ</button>
-  </div>
- </div>
+<header><div class="logo">🍪 SUGAR <span>CLICKER</span></div><div class="header-actions"><button class="smallbtn" id="soundBtn">🔊 Звук: выкл.</button><button class="smallbtn" id="saveBtn">💾 Сохранить</button></div></header>
+<main>
+<section class="panel center" id="playPanel">
+<h1>Пекарня мечты</h1><div class="sub">Пеки печеньки. Покори вселенную сахара.</div>
+<div class="count" id="cookies">0 печенек</div><div class="rate" id="rate">+0 в секунду</div>
+<div class="cookie-wrap"><button class="cookie" id="bigCookie" aria-label="Кликнуть по печенью"></button></div>
+<div class="clickhint">Нажимай на большое печенье!</div>
+<div class="stats"><div class="pill" id="clickPower">👆 За клик: 1</div><div class="pill" id="total">🏆 Всего испечено: 0</div><div class="pill" id="multiplier">✨ Бонус: x1</div></div>
+</section>
+<section class="side">
+<div class="panel">
+<div class="tabs"><button class="tab active" data-tab="buildings">🏭 Производство</button><button class="tab" data-tab="upgrades">⚡ Улучшения</button><button class="tab" data-tab="achievements">🏆 Достижения</button></div>
+<div class="section-title"><span id="listTitle">Покупки</span><small id="buyHint">Купи — и получай печеньки!</small></div>
+<div class="items" id="items"></div>
 </div>
-<div id="start"><div class="card"><div class="sub">ИЗМЕРЕНИЕ 001 // ПРОТОКОЛ ПРОБУЖДЕНИЯ</div><h1>PARADOX</h1><p>Ты проснулся в измерении, которого не должно существовать. Найди Стража Разлома, переживи его атаки и поглоти силу пространства.</p><p>Яркая арена сверху, пиксельные герои, способности, босс и кооператив на двоих.</p><div class="roomrow"><button id="hostGame">СОЗДАТЬ КОМНАТУ</button></div><div class="roomrow"><input id="roomCode" placeholder="Код комнаты друга" autocomplete="off"><button id="joinGame">ПОДКЛЮЧИТЬСЯ</button></div><p id="roomStatus" class="roomstatus">Создай комнату и отправь другу код. Для мультиплеера нужен интернет.</p><button id="play">ВОЙТИ В РАЗЛОМ</button><p class="tip">Для 3D и мультиплеера нужен интернет.</p></div></div>
-<script type="module">
-import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js';
-import { Peer } from 'https://esm.sh/peerjs@1.5.4';
-
-const mount=document.querySelector('#game');
-const scene=new THREE.Scene(); scene.background=new THREE.Color(0x8be85b);
-const camera=new THREE.OrthographicCamera(-18,18,10,-10,.1,180); camera.up.set(0,0,-1);
-const renderer=new THREE.WebGLRenderer({antialias:false,alpha:false}); renderer.setPixelRatio(Math.min(devicePixelRatio,1.5));renderer.setSize(innerWidth,innerHeight);renderer.shadowMap.enabled=false;renderer.domElement.style.imageRendering='pixelated';mount.appendChild(renderer.domElement);
-scene.add(new THREE.HemisphereLight(0xffffff,0x78a84a,2.0));
-const key=new THREE.DirectionalLight(0xffffff,1.4);key.position.set(8,16,9);scene.add(key);
-const mat=(color,emissive=0x000000,metalness=.2,roughness=.45)=>new THREE.MeshStandardMaterial({color,emissive,emissiveIntensity:1.2,metalness,roughness});
-// Bright top-down survival arena: grass, winding dirt paths, flower patches and chunky trees.
-const floorMat=new THREE.MeshBasicMaterial({color:0x78d84b});
-const floor=new THREE.Mesh(new THREE.PlaneGeometry(52,52),floorMat);floor.rotation.x=-Math.PI/2;floor.position.y=-.08;scene.add(floor);
-// Large winding sandy paths made from flat rounded-looking segments.
-const pathMat=new THREE.MeshBasicMaterial({color:0xe8c878});
-function pathSeg(x,z,w,d,rot=0){const m=new THREE.Mesh(new THREE.PlaneGeometry(w,d),pathMat);m.rotation.x=-Math.PI/2;m.rotation.z=rot;m.position.set(x,-.045,z);scene.add(m)}
-pathSeg(0,0,8,5,.25);pathSeg(-5,-4,7,4,-.45);pathSeg(4,5,8,4,-.55);pathSeg(8,-5,7,3,.55);pathSeg(-9,6,7,3,.25);
-// Pixel-art sprite helper: low-resolution canvas enlarged with nearest-neighbour filtering.
-function pixelTexture(draw,w=32,h=32){const c=document.createElement('canvas');c.width=w;c.height=h;const ctx=c.getContext('2d');ctx.imageSmoothingEnabled=false;draw(ctx,w,h);const t=new THREE.CanvasTexture(c);t.magFilter=THREE.NearestFilter;t.minFilter=THREE.NearestFilter;t.colorSpace=THREE.SRGBColorSpace;return t}
-function makeHeroTexture(main,accent,skin='#ffe0a6'){return pixelTexture((c)=>{c.clearRect(0,0,32,32);c.fillStyle='rgba(30,50,25,.25)';c.fillRect(7,25,18,4);c.fillStyle='#292c4a';c.fillRect(9,21,5,7);c.fillRect(18,21,5,7);c.fillStyle=main;c.fillRect(7,11,18,12);c.fillRect(5,13,4,8);c.fillRect(23,13,4,8);c.fillStyle=accent;c.fillRect(8,12,16,3);c.fillStyle=skin;c.fillRect(10,3,12,9);c.fillRect(8,5,3,5);c.fillRect(21,5,3,5);c.fillStyle='#352544';c.fillRect(10,2,12,3);c.fillRect(8,4,4,3);c.fillRect(20,4,4,3);c.fillStyle='#fff';c.fillRect(12,6,3,3);c.fillRect(18,6,3,3);c.fillStyle='#27344a';c.fillRect(13,7,2,2);c.fillRect(18,7,2,2);c.fillStyle=accent;c.fillRect(12,16,8,3);c.fillRect(15,14,3,7);},32,32)}
-function makeBossTexture(){return pixelTexture(c=>{c.clearRect(0,0,32,32);c.fillStyle='rgba(55,20,50,.25)';c.fillRect(4,27,24,3);c.fillStyle='#9b39ce';c.fillRect(5,12,22,14);c.fillRect(3,15,4,8);c.fillRect(25,15,4,8);c.fillStyle='#f05cbd';c.fillRect(8,5,16,10);c.fillRect(5,8,22,7);c.fillStyle='#ffcf66';c.fillRect(8,8,4,4);c.fillRect(20,8,4,4);c.fillStyle='#5d245f';c.fillRect(9,9,3,3);c.fillRect(20,9,3,3);c.fillStyle='#fff5a6';c.fillRect(10,9,1,1);c.fillRect(21,9,1,1);c.fillStyle='#ff76d0';c.fillRect(13,15,6,3);c.fillStyle='#7525a7';c.fillRect(8,25,5,5);c.fillRect(20,25,5,5);c.fillStyle='#ffd86b';c.fillRect(14,3,4,3);},32,32)}
-function flatSprite(texture,w,h){const m=new THREE.Mesh(new THREE.PlaneGeometry(w,h),new THREE.MeshBasicMaterial({map:texture,transparent:true,alphaTest:.04,side:THREE.DoubleSide,depthWrite:false}));m.rotation.x=-Math.PI/2;m.position.y=.18;return m}
-// Flower patches and tiny pixel rocks make the map colourful without blocking the camera.
-for(let i=0;i<170;i++){const x=(Math.random()-.5)*47,z=(Math.random()-.5)*47;if(Math.hypot(x,z)<5)continue;const colors=[0xff5ca8,0xffe35e,0xffffff,0x65eaff,0xc77bff];const flower=new THREE.Mesh(new THREE.BoxGeometry(.16,.04,.16),new THREE.MeshBasicMaterial({color:colors[i%colors.length]}));flower.position.set(x,.01,z);scene.add(flower);if(i%4===0){const leaf=new THREE.Mesh(new THREE.BoxGeometry(.32,.05,.16),new THREE.MeshBasicMaterial({color:0x309c43}));leaf.position.set(x+.18,.005,z+.08);scene.add(leaf)}}
-for(let i=0;i<30;i++){const x=(Math.random()-.5)*42,z=(Math.random()-.5)*42;if(Math.hypot(x,z)<7||Math.hypot(x,z+9)<5)continue;const tree=new THREE.Group();tree.position.set(x,0,z);const trunk=new THREE.Mesh(new THREE.BoxGeometry(.45,.5,.45),new THREE.MeshBasicMaterial({color:0x9b6034}));trunk.position.y=.22;tree.add(trunk);const crown=new THREE.Mesh(new THREE.BoxGeometry(1.55,.22,1.45),new THREE.MeshBasicMaterial({color:i%3===0?0x26a84a:i%3===1?0x36bd4e:0x168f43}));crown.position.y=.52;tree.add(crown);const top=new THREE.Mesh(new THREE.BoxGeometry(.9,.2,.9),new THREE.MeshBasicMaterial({color:0x55d85a}));top.position.set(-.1,.72,-.08);tree.add(top);scene.add(tree)}
-for(let i=0;i<22;i++){const x=(Math.random()-.5)*42,z=(Math.random()-.5)*42;const rock=new THREE.Mesh(new THREE.BoxGeometry(.45+Math.random()*.45,.12,.35+Math.random()*.4),new THREE.MeshBasicMaterial({color:i%2?0x9ba6a9:0x7f8b94}));rock.position.set(x,.03,z);rock.rotation.y=Math.random()*1.4;scene.add(rock)}
-// Player made of layered geometric meshes
-const player=new THREE.Group();scene.add(player);player.position.set(0,0,7);camera.position.set(0,42,7);camera.lookAt(0,0,7);
-const body=new THREE.Mesh(new THREE.CapsuleGeometry(.42,.85,5,10),mat(0x241c44,0x6d32ff));body.position.y=1.0;body.castShadow=true;player.add(body);
-const chest=new THREE.Mesh(new THREE.OctahedronGeometry(.43),mat(0x75f7ff,0x1cecff));chest.position.set(0,1.2,-.08);chest.scale.set(.7,1.15,.55);player.add(chest);
-const head=new THREE.Mesh(new THREE.IcosahedronGeometry(.3,1),mat(0x1b1635,0x9d4dff));head.position.y=1.85;player.add(head);
-const eyeMat=new THREE.MeshBasicMaterial({color:0x7bffff});for(const x of [-.11,.11]){const e=new THREE.Mesh(new THREE.SphereGeometry(.045,8,8),eyeMat);e.position.set(x,1.88,-.255);player.add(e)}
-const aura=new THREE.Mesh(new THREE.TorusGeometry(.75,.035,8,48),new THREE.MeshBasicMaterial({color:0x9d4dff,transparent:true,opacity:.8}));aura.rotation.x=Math.PI/2;aura.position.y=.06;player.add(aura);
-// Replace the 3D model with a crisp top-down pixel hero sprite.
-body.visible=false;chest.visible=false;head.visible=false;player.children.filter(o=>o!==body&&o!==chest&&o!==head&&o!==aura).forEach(o=>o.visible=false);aura.visible=false;const playerSprite=flatSprite(makeHeroTexture('#3478ff','#5cf4ff'),2.0,2.0);player.add(playerSprite);
-// orbiting fragments
-const fragments=[];
-// Boss
-const boss=new THREE.Group();scene.add(boss);boss.position.set(0,0,-9);
-const bossCore=new THREE.Mesh(new THREE.BoxGeometry(1.75,1.65,1.35),mat(0x3c102f,0xff248a,0,.95));bossCore.position.y=1.55;bossCore.castShadow=true;boss.add(bossCore);
-// Voxel head, glowing square eyes and chunky articulated limbs.
-const bossHead=new THREE.Mesh(new THREE.BoxGeometry(1.05,.9,.95),mat(0x1c1230,0xff4fd8,0,.95));bossHead.position.y=2.72;bossHead.castShadow=true;boss.add(bossHead);
-const bossEyeMat=new THREE.MeshBasicMaterial({color:0xffffff});for(const ex of [-.25,.25]){const eye=new THREE.Mesh(new THREE.BoxGeometry(.16,.16,.07),bossEyeMat);eye.position.set(ex,2.78,-.51);boss.add(eye)}
-const bossLimbs=[];for(let i=0;i<4;i++){const limb=new THREE.Mesh(new THREE.BoxGeometry(.42,1.35,.48),mat(0x311447,0x9e217c,0,.95));limb.position.set(Math.cos(i*Math.PI/2)*1.0,1.05,Math.sin(i*Math.PI/2)*.7);limb.rotation.z=(i%2?-.18:.18);limb.castShadow=true;boss.add(limb);bossLimbs.push(limb)}
-const bossAura=new THREE.Mesh(new THREE.TorusGeometry(1.8,.06,8,60),new THREE.MeshBasicMaterial({color:0xff36bd,transparent:true,opacity:.8}));bossAura.rotation.x=Math.PI/2;bossAura.position.y=.08;boss.add(bossAura);
-// Pixel boss sprite replaces the chunky 3D parts while keeping the existing AI and HP logic.
-bossCore.visible=false;bossHead.visible=false;bossLimbs.forEach(o=>o.visible=false);bossAura.visible=false;const bossSprite=flatSprite(makeBossTexture(),3.0,3.0);boss.add(bossSprite);
-// A second player is rendered locally and synchronized through a PeerJS data connection.
-function makeAvatar(color=0x55f4ff){const g=new THREE.Group();const sprite=flatSprite(makeHeroTexture('#13a9a8','#fff16a'),2.0,2.0);g.add(sprite);return g}
-const remotePlayer=makeAvatar(0x55f4ff);remotePlayer.visible=false;scene.add(remotePlayer);
-let peer=null,conn=null,isHost=false,lastNetSend=0,remoteTarget=null;
-const roomStatus=document.querySelector('#roomStatus');
-function setRoomStatus(t){roomStatus.textContent=t}
-function beginPeer(host){if(peer){try{peer.destroy()}catch(e){}peer=null;conn=null}isHost=host;setRoomStatus(host?'Создаём комнату…':'Подключаемся к комнате…');try{peer=new Peer();peer.on('open',id=>{if(host){setRoomStatus('Код комнаты: '+id+' — отправь его другу. Ожидаем подключение…');document.querySelector('#roomCode').value=id;}else{const target=document.querySelector('#roomCode').value.trim();if(!target){setRoomStatus('Введи код комнаты друга.');return;}conn=peer.connect(target,{reliable:true});wireConnection(conn);setRoomStatus('Соединяемся с '+target+'…');}});peer.on('connection',c=>{if(host&&!conn){conn=c;wireConnection(conn);setRoomStatus('Друг подключился! Вы в одной комнате.');}else c.close()});peer.on('error',e=>setRoomStatus('Мультиплеер: '+(e.type==='peer-unavailable'?'комната не найдена — проверь код.':e.type==='network'?'ошибка сети.':'ошибка соединения ('+e.type+').')))}catch(e){setRoomStatus('Не удалось запустить мультиплеер. Проверь интернет.')}}
-function wireConnection(c){conn=c;c.on('open',()=>{remotePlayer.visible=true;setRoomStatus('Мультиплеер подключён!');});c.on('data',d=>{if(d&&d.type==='state'){remoteTarget=d;remotePlayer.visible=true;if(typeof d.bhp==='number'){bossHp=Math.min(bossHp,d.bhp);updateHud()}}else if(d&&d.type==='damage'&&!won){bossHp-=d.amount;updateHud();if(bossHp<=0)victory()}});c.on('close',()=>{remotePlayer.visible=false;setRoomStatus('Друг отключился. Можно создать/подключить комнату снова.')});c.on('error',()=>setRoomStatus('Связь прервалась. Попробуй подключиться ещё раз.'))}
-document.querySelector('#hostGame').addEventListener('click',()=>beginPeer(true));
-document.querySelector('#joinGame').addEventListener('click',()=>{const code=document.querySelector('#roomCode').value.trim();if(!code){setRoomStatus('Сначала введи код комнаты друга.');return;}beginPeer(false)});
-
-// arena pillars
-for(let i=0;i<12;i++){let a=i*Math.PI/6;let p=new THREE.Group();p.position.set(Math.cos(a)*18,0,Math.sin(a)*18);let col=i%2?0x37205b:0x16465b;let pillar=new THREE.Mesh(new THREE.CylinderGeometry(.25,.55,2+Math.random()*2,6),mat(col,i%2?0x5a21ad:0x087e9a));pillar.position.y=1;pillar.rotation.z=(Math.random()-.5)*.15;pillar.castShadow=true;p.add(pillar);scene.add(p)}
-let started=false,dead=false,won=false,level=1,xp=0,xpNeed=100,shards=0,hp=100,maxHp=100,bossHp=450,bossMax=450,attackCd=0,dashCd=0,timeCd=0,burstCd=0,stasis=0,invuln=0,toastTimer=0;
-const keys={};addEventListener('keydown',e=>{keys[e.key.toLowerCase()]=true;if(e.key===' '){e.preventDefault();attack()}});addEventListener('keyup',e=>keys[e.key.toLowerCase()]=false);
-let moveX=0,moveY=0,stickOn=false,stickId=null;const stick=document.querySelector('#stick'),nub=document.querySelector('#nub');
-function stickMove(e){const r=stick.getBoundingClientRect(),cx=r.left+r.width/2,cy=r.top+r.height/2;let dx=e.clientX-cx,dy=e.clientY-cy,l=Math.hypot(dx,dy),max=r.width*.32;if(l>max){dx=dx/l*max;dy=dy/l*max}moveX=dx/max;moveY=dy/max;nub.style.transform=`translate(${dx}px,${dy}px)`}
-stick.addEventListener('pointerdown',e=>{stickOn=true;stickId=e.pointerId;stick.setPointerCapture(e.pointerId);stickMove(e)});stick.addEventListener('pointermove',e=>{if(stickOn&&e.pointerId===stickId)stickMove(e)});function resetStick(){stickOn=false;stickId=null;moveX=moveY=0;nub.style.transform='translate(0,0)'}stick.addEventListener('pointerup',resetStick);stick.addEventListener('pointercancel',resetStick);
-function bind(id,fn){let b=document.getElementById(id);b.addEventListener('pointerdown',e=>{e.preventDefault();fn()})}bind('attack',attack);bind('dash',dash);bind('time',useTime);bind('burst',burst);
-function say(s){const el=document.querySelector('#toast');el.textContent=s;el.style.opacity=1;toastTimer=2.1}
-function updateHud(){document.querySelector('#level').textContent=level;document.querySelector('#shards').textContent=shards;document.querySelector('#hptext').textContent=`${Math.ceil(hp)} / ${maxHp}`;document.querySelector('#hpfill').style.width=`${hp/maxHp*100}%`;document.querySelector('#xptext').textContent=`${xp} / ${xpNeed}`;document.querySelector('#xpfill').style.width=`${xp/xpNeed*100}%`;document.querySelector('#bossfill').style.width=`${Math.max(0,bossHp/bossMax*100)}%`}
-function gainXp(n){xp+=n;while(xp>=xpNeed){xp-=xpNeed;level++;xpNeed=Math.round(xpNeed*1.45);maxHp+=15;hp=Math.min(maxHp,hp+35);shards+=3;say('ЭВОЛЮЦИЯ! УРОВЕНЬ '+level)}updateHud()}
-function nearestBoss(){return player.position.distanceTo(boss.position)<4.4}
-function effect(pos,color=0x55f4ff,scale=1){const mesh=new THREE.Mesh(new THREE.SphereGeometry(.5,12,12),new THREE.MeshBasicMaterial({color,transparent:true,opacity:.8,wireframe:true}));mesh.position.copy(pos);scene.add(mesh);let t=0;effects.push({mesh,t,scale})}
-const effects=[];
-function attack(){if(!started||dead||won||attackCd>0)return;attackCd=.48;body.material.emissive.setHex(0x8e36ff);setTimeout(()=>body.material.emissive.setHex(0x6d32ff),120);effect(player.position.clone().add(new THREE.Vector3(0,1,-1)),0x55f4ff,1.4);if(nearestBoss()&&stasis<=0){const damage=32+level*4;bossHp-=damage;if(conn&&conn.open)try{conn.send({type:'damage',amount:damage})}catch(e){}say('УДАР ПО СТРАЖУ');if(bossHp<=0)victory()}else if(player.position.distanceTo(boss.position)<7){const damage=8+level;bossHp-=damage;if(conn&&conn.open)try{conn.send({type:'damage',amount:damage})}catch(e){}if(bossHp<=0)victory()}}
-function dash(){if(!started||dead||won||dashCd>0)return;dashCd=2.8;let dir=new THREE.Vector3(moveX,0,moveY);if(dir.length()<.1)dir.set(0,0,-1).applyQuaternion(player.quaternion);dir.normalize();player.position.addScaledVector(dir,4.2);effect(player.position.clone().add(new THREE.Vector3(0,1,0)),0xa855f7,2);say('РЫВОК')}
-function useTime(){if(!started||dead||won||timeCd>0)return;timeCd=9;stasis=3.2;effect(boss.position.clone().add(new THREE.Vector3(0,1,0)),0x55f4ff,3);say('СТАЗИС: ВРЕМЯ ЗАМОРОЖЕНО')}
-function burst(){if(!started||dead||won||burstCd>0)return;burstCd=7;effect(player.position.clone().add(new THREE.Vector3(0,1,0)),0xff53d8,5);if(player.position.distanceTo(boss.position)<10){const damage=85+level*10;bossHp-=damage;if(conn&&conn.open)try{conn.send({type:'damage',amount:damage})}catch(e){}say('РАЗЛОМ РЕАЛЬНОСТИ!');if(bossHp<=0)victory()}else say('РАЗЛОМ: ПОДОЙДИ К БОССУ')}
-function victory(){if(won)return;won=true;boss.visible=false;shards+=25;gainXp(100);document.querySelector('#quest').textContent='Страж повержен';document.querySelector('#hint').textContent='Ты поглотил силу пространства. Перезапусти игру для нового испытания.';say('СТРАЖ ПОВЕРЖЕН — СИЛА ПОГЛОЩЕНА');}
-function hurt(n){if(invuln>0||dead||won)return;hp-=n;invuln=.7;effect(player.position.clone().add(new THREE.Vector3(0,1,0)),0xff327a,1.3);if(hp<=0){hp=0;dead=true;say('ТЫ ПАЛ — ОБНОВИ СТРАНИЦУ');document.querySelector('#quest').textContent='Ты пал в разломе';document.querySelector('#hint').textContent='Обнови страницу, чтобы попробовать снова.'}updateHud()}
-document.querySelector('#play').addEventListener('click',async()=>{
- try{
-   if(!document.fullscreenElement && document.documentElement.requestFullscreen) await document.documentElement.requestFullscreen();
- }catch(e){}
- let orientationLocked=false;
- try{
-   if(screen.orientation && screen.orientation.lock){await screen.orientation.lock('landscape');orientationLocked=true;}
- }catch(e){}
- started=true;
- document.querySelector('#start').style.display='none';
- document.querySelector('#bossbox').style.display='block';
- say(orientationLocked?'ИЗМЕРЕНИЕ ЗАГРУЖЕНО':'ПОВЕРНИ ТЕЛЕФОН БОКОМ ДЛЯ ИГРЫ');
-});
-let last=performance.now(),elapsed=0;
-function loop(now){requestAnimationFrame(loop);let dt=Math.min((now-last)/1000,.04);last=now;elapsed+=dt;
- if(started){if(attackCd>0)attackCd-=dt;if(dashCd>0)dashCd-=dt;if(timeCd>0)timeCd-=dt;if(burstCd>0)burstCd-=dt;if(stasis>0)stasis-=dt;if(invuln>0)invuln-=dt;if(toastTimer>0){toastTimer-=dt;if(toastTimer<=0)document.querySelector('#toast').style.opacity=0}
- let mx=moveX+(keys.d||keys.arrowright?1:0)-(keys.a||keys.arrowleft?1:0),mz=moveY+(keys.s||keys.arrowdown?1:0)-(keys.w||keys.arrowup?1:0);let len=Math.hypot(mx,mz);if(len>1){mx/=len;mz/=len}const speed=5.4;player.position.x+=mx*speed*dt;player.position.z+=mz*speed*dt;player.position.x=Math.max(-20,Math.min(20,player.position.x));player.position.z=Math.max(-20,Math.min(20,player.position.z));if(conn&&conn.open&&now-lastNetSend>70){lastNetSend=now;try{conn.send({type:'state',x:player.position.x,y:player.position.y,z:player.position.z,ry:player.rotation.y,hp:hp,level:level,bhp:bossHp})}catch(e){}}if(remoteTarget&&remotePlayer.visible){remotePlayer.position.x+=(remoteTarget.x-remotePlayer.position.x)*Math.min(1,dt*10);remotePlayer.position.z+=(remoteTarget.z-remotePlayer.position.z)*Math.min(1,dt*10);remotePlayer.rotation.y=remoteTarget.ry||0;}if(Math.abs(mx)+Math.abs(mz)>.08){player.rotation.y=0;body.position.y=1+Math.sin(elapsed*13)*.055}else body.position.y=1+Math.sin(elapsed*2)*.025;
- aura.rotation.z+=dt*.9;chest.rotation.y=Math.sin(elapsed*2)*.12;fragments.forEach((f,i)=>{let a=elapsed*1.5+i*Math.PI*2/3;f.position.set(player.position.x+Math.cos(a)*.8,1.25+Math.sin(elapsed*3+i)*.15,player.position.z+Math.sin(a)*.8)});
- if(!won){boss.position.y=Math.sin(elapsed*1.8)*.22;bossCore.rotation.y+=dt*.22;bossCore.rotation.x=Math.sin(elapsed*2)*.035;bossHead.rotation.y-=dt*.28;bossLimbs.forEach((limb,i)=>{limb.rotation.x=Math.sin(elapsed*7+i*Math.PI)*.28;limb.rotation.z=(i%2?-.18:.18)+Math.sin(elapsed*7+i)*.12});bossAura.rotation.z+=dt*.7;
-  // The Rift Guardian now patrols and chases the nearest visible player instead of standing still.
-  if(stasis<=0){const dx=player.position.x-boss.position.x,dz=player.position.z-boss.position.z,dist=Math.hypot(dx,dz);if(dist>3.1&&dist<24){boss.position.x+=dx/dist*2.15*dt;boss.position.z+=dz/dist*2.15*dt;}else if(dist>=24){boss.position.x+=Math.sin(elapsed*.7)*.35*dt;boss.position.z+=Math.cos(elapsed*.65)*.35*dt;}boss.rotation.y=0;}
-  if(stasis<=0&&player.position.distanceTo(boss.position)<5.7){boss.userData.atk=(boss.userData.atk||0)+dt;if(boss.userData.atk>1.4){boss.userData.atk=0;hurt(9+level);effect(player.position.clone().add(new THREE.Vector3(0,1,0)),0xff248a,1.6)}}}
- camera.position.set(player.position.x,42,player.position.z);camera.lookAt(player.position.x,0,player.position.z);
- }
- effects.forEach((e,i)=>{e.t+=dt;e.mesh.scale.setScalar(1+e.t*e.scale*2);e.mesh.material.opacity=Math.max(0,.8-e.t);if(e.t>.45){scene.remove(e.mesh);effects.splice(i,1)}});
- if(started)updateHud();renderer.render(scene,camera)}
-requestAnimationFrame(loop);
-addEventListener('resize',()=>{const aspect=innerWidth/innerHeight;const viewH=aspect>1?22:34;camera.left=-viewH*aspect/2;camera.right=viewH*aspect/2;camera.top=viewH/2;camera.bottom=-viewH/2;camera.updateProjectionMatrix();renderer.setSize(innerWidth,innerHeight)});
-{const aspect=innerWidth/innerHeight;const viewH=aspect>1?22:34;camera.left=-viewH*aspect/2;camera.right=viewH*aspect/2;camera.top=viewH/2;camera.bottom=-viewH/2;camera.updateProjectionMatrix();}
+<div class="panel"><div class="section-title">📊 Статистика</div><div style="padding:0 16px 16px;display:grid;grid-template-columns:1fr 1fr;gap:10px">
+<div class="pill">Кликов: <b id="clicks">0</b></div><div class="pill">Покупок: <b id="purchases">0</b></div><div class="pill">Время: <b id="timePlayed">0 мин</b></div><div class="pill">Рекорд: <b id="best">0</b></div>
+</div></div>
+</section>
+</main>
+<footer>Sugar Clicker — оригинальная фан-игра в жанре idle clicker. Прогресс сохраняется в этом браузере.</footer>
+<div class="notice" id="notice"></div>
+<script>
+const buildings=[
+ {id:'cursor',name:'Указатель',icon:'👆',desc:'Сам печатает печеньки',base:15, cps:.1},
+ {id:'grandma',name:'Бабушка',icon:'👵',desc:'Секретный семейный рецепт',base:100,cps:1},
+ {id:'farm',name:'Печеньковая ферма',icon:'🌾',desc:'Выращивает ингредиенты',base:1100,cps:8},
+ {id:'mine',name:'Сахарная шахта',icon:'⛏️',desc:'Добывает сладкий сахар',base:12000,cps:47},
+ {id:'factory',name:'Фабрика',icon:'🏭',desc:'Массовое производство',base:130000,cps:260},
+ {id:'bank',name:'Сахарный банк',icon:'🏦',desc:'Инвестирует в печенье',base:1400000,cps:1400},
+ {id:'temple',name:'Храм печенья',icon:'🏛️',desc:'Молится великому тесту',base:20000000,cps:7800},
+ {id:'portal',name:'Портал',icon:'🌀',desc:'Печенье из другого измерения',base:330000000,cps:44000},
+ {id:'time',name:'Машина времени',icon:'⏳',desc:'Забирает печенье из будущего',base:5100000000,cps:260000},
+ {id:'universe',name:'Пекарня вселенной',icon:'🌌',desc:'Создаёт целые галактики',base:75000000000,cps:1600000}
+];
+const upgrades=[
+ {id:'strongFinger',name:'Сильный палец',icon:'💪',desc:'+1 печенье за клик',cost:100,apply:s=>s.clickPower+=1},
+ {id:'doubleFinger',name:'Золотой палец',icon:'✨',desc:'Удваивает силу клика',cost:1000,apply:s=>s.clickPower*=2},
+ {id:'grandmaRecipe',name:'Рецепт бабушки',icon:'📖',desc:'Бабушки производят в 2 раза больше',cost:500,apply:s=>s.buildingMult.grandma=(s.buildingMult.grandma||1)*2},
+ {id:'farmBoost',name:'Удобрение из сахара',icon:'🌱',desc:'Фермы производят в 2 раза больше',cost:5000,apply:s=>s.buildingMult.farm=(s.buildingMult.farm||1)*2},
+ {id:'goldenOven',name:'Золотая духовка',icon:'🔥',desc:'Все здания производят на 25% больше',cost:25000,apply:s=>s.globalMult*=1.25},
+ {id:'factoryBoost',name:'Автоматизация',icon:'⚙️',desc:'Фабрики производят в 2 раза больше',cost:200000,apply:s=>s.buildingMult.factory=(s.buildingMult.factory||1)*2},
+ {id:'sugarStorm',name:'Сахарный шторм',icon:'🌩️',desc:'Сила клика x5',cost:1000000,apply:s=>s.clickPower*=5},
+ {id:'cosmicOven',name:'Космическая духовка',icon:'🪐',desc:'Все здания производят в 2 раза больше',cost:10000000,apply:s=>s.globalMult*=2}
+];
+const achievements=[
+ {id:'a1',name:'Первая крошка',icon:'🍪',desc:'Испеки 1 печенье',test:s=>s.total>=1},
+ {id:'a2',name:'Сотня сладостей',icon:'💯',desc:'Испеки 100 печенек',test:s=>s.total>=100},
+ {id:'a3',name:'Тысячник',icon:'🎉',desc:'Испеки 1 000 печенек',test:s=>s.total>=1000},
+ {id:'a4',name:'Маленькая фабрика',icon:'🏭',desc:'Купи 10 зданий',test:s=>Object.values(s.owned).reduce((a,b)=>a+b,0)>=10},
+ {id:'a5',name:'Сладкий миллион',icon:'💰',desc:'Испеки 1 000 000 печенек',test:s=>s.total>=1e6},
+ {id:'a6',name:'Космический кондитер',icon:'🌌',desc:'Испеки 1 000 000 000 печенек',test:s=>s.total>=1e9}
+];
+const fresh=()=>({cookies:0,total:0,clicks:0,clickPower:1,owned:{},buildingMult:{},globalMult:1,boughtUpgrades:[],achievements:[],purchases:0,started:Date.now(),best:0,last:Date.now(),sound:false,goldenUntil:0});
+let state=fresh(),tab='buildings',noticeTimer;
+const $=id=>document.getElementById(id);
+function fmt(n){if(n<1000)return Math.floor(n).toLocaleString('ru-RU');const units=['тыс.','млн','млрд','трлн','квдрлн','квинт.'];let i=-1;while(n>=1000&&i<units.length-1){n/=1000;i++}return n.toLocaleString('ru-RU',{maximumFractionDigits:1})+' '+units[i]}
+function price(b){return Math.floor(b.base*Math.pow(1.15,state.owned[b.id]||0))}
+function cps(){return buildings.reduce((sum,b)=>sum+(state.owned[b.id]||0)*b.cps*(state.buildingMult[b.id]||1),0)*state.globalMult}
+function plural(n){return 'печенек'}
+function notice(t){$('notice').textContent=t;$('notice').classList.add('show');clearTimeout(noticeTimer);noticeTimer=setTimeout(()=>$('notice').classList.remove('show'),1900)}
+function addCookies(n){state.cookies+=n;state.total+=n;state.best=Math.max(state.best,state.total)}
+function clickCookie(e){addCookies(state.clickPower);state.clicks++;const r=$('playPanel').getBoundingClientRect();const f=document.createElement('div');f.className='float';f.textContent='+'+fmt(state.clickPower);f.style.left=Math.max(8,Math.min(innerWidth-80,e.clientX-30))+'px';f.style.top=(e.clientY-12)+'px';document.body.appendChild(f);setTimeout(()=>f.remove(),900);renderTop()}
+$('bigCookie').addEventListener('pointerdown',clickCookie);
+function buyBuilding(b){let p=price(b);if(state.cookies<p)return;state.cookies-=p;state.owned[b.id]=(state.owned[b.id]||0)+1;state.purchases++;render()}
+function buyUpgrade(u){if(state.boughtUpgrades.includes(u.id)||state.cookies<u.cost)return;state.cookies-=u.cost;state.boughtUpgrades.push(u.id);u.apply(state);notice('Улучшение куплено: '+u.name);render()}
+function renderTop(){$('cookies').textContent=fmt(state.cookies)+' печенек';$('rate').textContent='+'+fmt(cps())+' в секунду';$('clickPower').textContent='👆 За клик: '+fmt(state.clickPower);$('total').textContent='🏆 Всего испечено: '+fmt(state.total);$('multiplier').textContent='✨ Бонус: x'+state.globalMult.toLocaleString('ru-RU',{maximumFractionDigits:2});$('clicks').textContent=fmt(state.clicks);$('purchases').textContent=fmt(state.purchases);$('timePlayed').textContent=fmt((Date.now()-state.started)/60000)+' мин';$('best').textContent=fmt(state.best)}
+function renderItems(){const box=$('items');box.innerHTML='';let list=tab==='buildings'?buildings:tab==='upgrades'?upgrades:achievements;$('listTitle').textContent=tab==='buildings'?'Производство':tab==='upgrades'?'Улучшения':'Достижения';$('buyHint').textContent=tab==='buildings'?'Покупай здания для пассивного дохода':tab==='upgrades'?'Усиливай свою пекарню':'Твои сладкие победы';
+if(tab==='buildings')list.forEach(b=>{let p=price(b),owned=state.owned[b.id]||0;let btn=document.createElement('button');btn.className='item';btn.disabled=state.cookies<p;btn.innerHTML=`<div class="icon">${b.icon}</div><div><div class="item-name">${b.name}</div><div class="item-desc">${b.desc} · +${fmt(b.cps*(state.buildingMult[b.id]||1)*state.globalMult)}/сек.</div></div><div><div class="cost">🍪 ${fmt(p)}</div><div class="owned">Есть: ${owned}</div></div>`;btn.onclick=()=>buyBuilding(b);box.appendChild(btn)});
+if(tab==='upgrades')list.forEach(u=>{let bought=state.boughtUpgrades.includes(u.id);let btn=document.createElement('button');btn.className='item';btn.disabled=bought||state.cookies<u.cost;btn.innerHTML=`<div class="icon">${u.icon}</div><div><div class="item-name">${u.name}${bought?' ✓':''}</div><div class="item-desc">${u.desc}</div></div><div><div class="cost">${bought?'Куплено':'🍪 '+fmt(u.cost)}</div></div>`;btn.onclick=()=>buyUpgrade(u);box.appendChild(btn)});
+if(tab==='achievements')list.forEach(a=>{let got=state.achievements.includes(a.id);let unlocked=a.test(state);let btn=document.createElement('div');btn.className='item';btn.style.opacity=got?'.9':'.65';btn.innerHTML=`<div class="icon">${got?a.icon:'🔒'}</div><div><div class="item-name">${a.name}${got?' ✓':''}</div><div class="item-desc">${a.desc}</div></div><div class="cost">${got?'Получено':unlocked?'Готово!':'Не получено'}</div>`;box.appendChild(btn)});
+if(!list.length)box.innerHTML='<div class="empty">Пока пусто</div>'}
+function render(){renderTop();renderItems()}
+document.querySelectorAll('.tab').forEach(b=>b.onclick=()=>{tab=b.dataset.tab;document.querySelectorAll('.tab').forEach(x=>x.classList.toggle('active',x===b));renderItems()});
+function save(){state.last=Date.now();try{localStorage.setItem('sugarClickerSave',JSON.stringify(state));notice('Прогресс сохранён!')}catch(e){notice('Не удалось сохранить прогресс')}}
+function load(){try{let raw=localStorage.getItem('sugarClickerSave');if(raw){let s=JSON.parse(raw);state={...fresh(),...s};let elapsed=Math.min(8*3600,Math.max(0,(Date.now()-(state.last||Date.now()))/1000));if(elapsed>5){let bonus=cps()*elapsed;state.cookies+=bonus;state.total+=bonus;setTimeout(()=>notice('Пока тебя не было, испечено '+fmt(bonus)+' печенек!'),600)}}}catch(e){state=fresh()}}
+$('saveBtn').onclick=save;$('soundBtn').onclick=()=>{state.sound=!state.sound;$('soundBtn').textContent=state.sound?'🔊 Звук: вкл.':'🔊 Звук: выкл.';notice('Звук '+(state.sound?'включён':'выключен'))};
+function spawnGolden(){if(Date.now()<state.goldenUntil)return;state.goldenUntil=Date.now()+12000;let g=document.createElement('button');g.className='gold-cookie';g.textContent='🌟';g.title='Золотое печенье!';g.onclick=()=>{let reward=Math.max(77,cps()*60,state.cookies*.08);addCookies(reward);g.remove();state.goldenUntil=0;notice('Золотое печенье! +'+fmt(reward));render()};$('playPanel').appendChild(g);setTimeout(()=>{g.remove();state.goldenUntil=0},9000)}
+function tick(){let now=Date.now();let dt=Math.min(2,(now-state.last)/1000);if(dt>0){let gain=cps()*dt;state.cookies+=gain;state.total+=gain;state.best=Math.max(state.best,state.total)}state.last=now;let newly=[];achievements.forEach(a=>{if(!state.achievements.includes(a.id)&&a.test(state)){state.achievements.push(a.id);newly.push(a.name)}});if(newly.length)notice('🏆 Достижение: '+newly[0]);renderTop();renderItems()}
+load();render();setInterval(tick,250);setInterval(()=>{if(Math.random()<.5)spawnGolden()},18000);setInterval(()=>{try{localStorage.setItem('sugarClickerSave',JSON.stringify(state))}catch(e){}},10000);
+window.addEventListener('beforeunload',()=>{try{localStorage.setItem('sugarClickerSave',JSON.stringify(state))}catch(e){}});
 </script>
-</body>
-</html>
+</body></html>
