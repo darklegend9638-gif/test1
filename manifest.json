@@ -1,9 +1,0 @@
-{
-  "name": "PARADOX 3D RPG",
-  "short_name": "PARADOX",
-  "start_url": "./index.html",
-  "display": "fullscreen",
-  "orientation": "landscape",
-  "background_color": "#080512",
-  "theme_color": "#080512"
-}
